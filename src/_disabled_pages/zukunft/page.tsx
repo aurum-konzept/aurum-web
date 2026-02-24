@@ -10,7 +10,7 @@ export default function ZukunftPage() {
   return (
     <main className="min-h-screen text-neutral-50"> 
         <div className="relative z-10">
-           <Header />
+           <Header />   
 
             <section className="mx-auto max-w-6xl px-6 py-16">
                 <p className="mb-4 inline-flex rounded-full border border-amber-400/30 bg-amber-400/10 px-4 py-1 text-xs text-amber-200">
