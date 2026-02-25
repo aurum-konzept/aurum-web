@@ -1,10 +1,8 @@
 import type { NextConfig } from "next";
 
+// next.config.ts
 const nextConfig = {
-  output: "export",
-  images: {
-    unoptimized: true,
-  },
+  images: { unoptimized: true }, // optional, aber empfehlenswert für VPS ohne Next Image Optimizer Setup
 };
 
 module.exports = nextConfig;
