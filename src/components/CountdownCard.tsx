@@ -8,9 +8,12 @@ function pad(n: number) {
 }
 
 export default function CountdownCard() {
-const target = useMemo(() => {
-  return Date.parse("2026-03-02T16:00:00+01:00"); // Mo, 02.03.2026 16:00 Berlin
-}, []);
+  // Ziel: Montag, 02.03.2026 16:00 Berlin (CET = UTC+1)
+  const target = useMemo(() => {
+    // 16:00 CET = 15:00 UTC
+    // month is 0-indexed → 2 = März
+    return Date.UTC(2026, 2, 2, 15, 0, 0);
+  }, []);
 
   const [mounted, setMounted] = useState(false);
   const [now, setNow] = useState(0);
