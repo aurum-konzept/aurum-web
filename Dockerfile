@@ -2,10 +2,19 @@ FROM node:20-alpine
 
 WORKDIR /app
 
+# 1) package files
 COPY package*.json ./
+
+# 2) prisma schema muss VOR npm ci rein (wegen postinstall/prisma generate)
+COPY prisma ./prisma
+
+# 3) deps installieren (postinstall läuft hier und findet schema)
 RUN npm ci
 
+# 4) restlicher code
 COPY . .
+
+# 5) build (macht optional nochmal prisma generate via build script)
 RUN npm run build
 
 ENV NODE_ENV=production
