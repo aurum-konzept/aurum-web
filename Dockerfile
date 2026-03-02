@@ -8,8 +8,8 @@ COPY package*.json ./
 # 2) prisma schema muss VOR npm ci rein (wegen postinstall/prisma generate)
 COPY prisma ./prisma
 
-# 3) deps installieren (postinstall läuft hier und findet schema)
-RUN npm ci
+# 3) deps installieren
+RUN npm install
 
 # 4) restlicher code
 COPY . .
