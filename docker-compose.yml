@@ -1,0 +1,19 @@
+version: "3.8"
+
+services:
+  mariadb:
+    image: mariadb:11
+    container_name: aurum_mariadb
+    restart: unless-stopped
+    environment:
+      MARIADB_ROOT_PASSWORD: "A434821101De4448."
+      MARIADB_DATABASE: "aurum"
+      MARIADB_USER: "aurum_user"
+      MARIADB_PASSWORD: "A4348De1444e8."
+    ports:
+      - "3306:3306"
+    volumes:
+      - aurum_mariadb_data:/var/lib/mysql
+
+volumes:
+  aurum_mariadb_data:
