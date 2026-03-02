@@ -1,6 +1,31 @@
 version: "3.8"
 
 services:
+  web:
+    build: .
+    container_name: aurum_web
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - DATABASE_URL=mysql://aurum_user:A4348De1444e8.@mariadb:3306/aurum
+      - SHADOW_DATABASE_URL=mysql://aurum_user:A4348De1444e8.@mariadb:3306/aurum_shadow
+      - NEXTAUTH_URL=https://aurum-konzept.de
+      - NEXTAUTH_SECRET=ERXWfXISCMhGhOEjUKATZgehHtUAgaoE8+5NLxTyydI=
+      - ALPHAVANTAGE_KEY=2NIKMHYP6LTMJZ5V
+      - SMTP_HOST=smtp.ionos.de
+      - SMTP_PORT=587
+      - SMTP_SECURE=false
+      - SMTP_USER=info@aurum-konzept.de
+      - SMTP_PASS=3-MailA4348SchmiedGold
+      - CONTACT_TO=info@aurum-konzept.de
+      - CONTACT_FROM=info@aurum-konzept.de
+    depends_on:
+      - mariadb
+    networks:
+      - aurum_network
+
   mariadb:
     image: mariadb:11
     container_name: aurum_mariadb
@@ -14,6 +39,11 @@ services:
       - "3306:3306"
     volumes:
       - aurum_mariadb_data:/var/lib/mysql
+    networks:
+      - aurum_network
 
 volumes:
   aurum_mariadb_data:
+
+networks:
+  aurum_network:
