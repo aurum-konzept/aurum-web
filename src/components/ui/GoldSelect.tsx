@@ -1,6 +1,11 @@
 "use client";
 
-import { Listbox } from "@headlessui/react";
+import {
+  Listbox,
+  ListboxButton,
+  ListboxOptions,
+  ListboxOption,
+} from "@headlessui/react";
 import React from "react";
 
 type Option<T extends string> = { value: T; label: string };
@@ -24,24 +29,23 @@ export default function GoldSelect<T extends string>({
 
       <Listbox value={value} onChange={onChange}>
         <div className="relative mt-1">
-          {/* Button (geschlossenes Dropdown) */}
-          <Listbox.Button
-            className="w-full rounded-xl border border-amber-400/30 bg-black p-3 text-left text-white outline-none
-                       focus:border-amber-400 hover:border-amber-400/60"
+
+          {/* Button */}
+          <ListboxButton
+            className="w-full rounded-xl border border-amber-400/30 bg-black p-3 text-left text-white outline-none focus:border-amber-400 hover:border-amber-400/60"
           >
             <span className="block truncate">{selected?.label}</span>
             <span className="pointer-events-none absolute inset-y-0 right-3 flex items-center text-amber-200">
               ▾
             </span>
-          </Listbox.Button>
+          </ListboxButton>
 
-          {/* Optionen (aufgeklappt) */}
-          <Listbox.Options
-            className="absolute z-50 mt-2 max-h-60 w-full overflow-auto rounded-xl border border-amber-400/30
-                       bg-black/95 p-1 shadow-lg backdrop-blur-sm focus:outline-none"
+          {/* Optionen */}
+          <ListboxOptions
+            className="absolute z-50 mt-2 max-h-60 w-full overflow-auto rounded-xl border border-amber-400/30 bg-black/95 p-1 shadow-lg backdrop-blur-sm focus:outline-none"
           >
             {options.map((opt) => (
-              <Listbox.Option
+              <ListboxOption
                 key={opt.value}
                 value={opt.value}
                 className={({ active, selected }) =>
@@ -53,9 +57,10 @@ export default function GoldSelect<T extends string>({
                 }
               >
                 {opt.label}
-              </Listbox.Option>
+              </ListboxOption>
             ))}
-          </Listbox.Options>
+          </ListboxOptions>
+
         </div>
       </Listbox>
     </div>
