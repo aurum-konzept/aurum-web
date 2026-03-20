@@ -1,5 +1,6 @@
 "use client";
 
+import AuthHeader from "@/components/auth/AuthHeader";
 import { useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
@@ -33,7 +34,6 @@ export default function AuthPage() {
         return;
       }
 
-      // Direkt einloggen nach Registrierung
       const login = await signIn("credentials", {
         email,
         password,
@@ -74,94 +74,106 @@ export default function AuthPage() {
   }
 
   return (
-    <main className="min-h-screen flex items-center justify-center px-6">
-      <div className="w-full max-w-md">
+    <>
+      <AuthHeader />
 
-        {/* Card */}
-        <div className="rounded-3xl border border-neutral-800 bg-neutral-950/70 backdrop-blur-xl p-8 shadow-2xl">
+      <main className="min-h-screen px-4 pb-12 pt-10 text-neutral-50 sm:px-6 sm:pb-16 sm:pt-14">
+        <div className="mx-auto flex min-h-[70vh] w-full max-w-md items-center justify-center">
+          <section
+            aria-labelledby="auth-title"
+            className="w-full rounded-3xl border border-neutral-800 bg-neutral-950/70 p-5 shadow-2xl backdrop-blur-xl sm:p-8"
+          >
+            {/* Tabs */}
+            <div className="mb-6 flex overflow-hidden rounded-full border border-neutral-800 sm:mb-8">
+              <button
+                type="button"
+                onClick={() => setMode("login")}
+                className={`flex-1 py-2 text-sm transition ${
+                  mode === "login"
+                    ? "bg-amber-400/10 text-amber-300"
+                    : "text-neutral-400 hover:text-white"
+                }`}
+              >
+                Anmelden
+              </button>
 
-          {/* Tabs */}
-          <div className="flex mb-8 rounded-full border border-neutral-800 overflow-hidden">
-            <button
-              onClick={() => setMode("login")}
-              className={`flex-1 py-2 text-sm transition ${
-                mode === "login"
-                  ? "bg-amber-400/10 text-amber-300"
-                  : "text-neutral-400 hover:text-white"
-              }`}
+              <button
+                type="button"
+                onClick={() => setMode("register")}
+                className={`flex-1 py-2 text-sm transition ${
+                  mode === "register"
+                    ? "bg-amber-400/10 text-amber-300"
+                    : "text-neutral-400 hover:text-white"
+                }`}
+              >
+                Registrieren
+              </button>
+            </div>
+
+            {/* Title */}
+            <h1
+              id="auth-title"
+              className="mb-2 text-center text-xl font-semibold sm:text-2xl"
             >
-              Anmelden
-            </button>
-            <button
-              onClick={() => setMode("register")}
-              className={`flex-1 py-2 text-sm transition ${
-                mode === "register"
-                  ? "bg-amber-400/10 text-amber-300"
-                  : "text-neutral-400 hover:text-white"
-              }`}
-            >
-              Registrieren
-            </button>
-          </div>
+              {mode === "login"
+                ? "Willkommen zurück"
+                : "Erstellen Sie Ihr Konto"}
+            </h1>
 
-          {/* Title */}
-          <h1 className="text-2xl font-semibold mb-6 text-center">
-            {mode === "login"
-              ? "Willkommen zurück"
-              : "Erstellen Sie Ihr Konto"}
-          </h1>
+            <p className="mb-6 text-center text-sm text-neutral-400 sm:mb-7">
+              {mode === "login"
+                ? "Melden Sie sich an, um Ihr Dashboard zu öffnen."
+                : "Registrieren Sie sich, um Ihren Aurum-Zugang einzurichten."}
+            </p>
 
-          {/* Form */}
-          <form onSubmit={handleSubmit} className="space-y-4">
+            {/* Form */}
+            <form onSubmit={handleSubmit} className="space-y-4">
+              {mode === "register" && (
+                <input
+                  type="text"
+                  placeholder="Name (optional)"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  className="w-full rounded-xl border border-neutral-800 bg-neutral-900 px-4 py-3 text-sm transition focus:border-amber-400/50 focus:outline-none"
+                />
+              )}
 
-            {mode === "register" && (
               <input
-                type="text"
-                placeholder="Name (optional)"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                className="w-full rounded-xl bg-neutral-900 border border-neutral-800 px-4 py-3 text-sm focus:outline-none focus:border-amber-400/50 transition"
+                type="email"
+                placeholder="E-Mail"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-full rounded-xl border border-neutral-800 bg-neutral-900 px-4 py-3 text-sm transition focus:border-amber-400/50 focus:outline-none"
               />
-            )}
 
-            <input
-              type="email"
-              placeholder="E-Mail"
-              required
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full rounded-xl bg-neutral-900 border border-neutral-800 px-4 py-3 text-sm focus:outline-none focus:border-amber-400/50 transition"
-            />
+              <input
+                type="password"
+                placeholder="Passwort"
+                required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full rounded-xl border border-neutral-800 bg-neutral-900 px-4 py-3 text-sm transition focus:border-amber-400/50 focus:outline-none"
+              />
 
-            <input
-              type="password"
-              placeholder="Passwort"
-              required
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full rounded-xl bg-neutral-900 border border-neutral-800 px-4 py-3 text-sm focus:outline-none focus:border-amber-400/50 transition"
-            />
+              {error && (
+                <div className="text-center text-sm text-red-400">{error}</div>
+              )}
 
-            {error && (
-              <div className="text-sm text-red-400 text-center">
-                {error}
-              </div>
-            )}
-
-            <button
-              disabled={loading}
-              className="w-full rounded-xl bg-amber-400/10 border border-amber-400/40 py-3 text-sm text-amber-200 hover:bg-amber-400/20 transition disabled:opacity-50"
-            >
-              {loading
-                ? "Bitte warten..."
-                : mode === "login"
-                ? "Einloggen"
-                : "Account erstellen"}
-            </button>
-
-          </form>
+              <button
+                disabled={loading}
+                className="w-full rounded-xl border border-amber-400/40 bg-amber-400/10 py-3 text-sm text-amber-200 transition hover:bg-amber-400/20 disabled:opacity-50"
+              >
+                {loading
+                  ? "Bitte warten..."
+                  : mode === "login"
+                  ? "Einloggen"
+                  : "Account erstellen"}
+              </button>
+            </form>
+          </section>
         </div>
-      </div>
-    </main>
+      </main>
+    </>
   );
 }
